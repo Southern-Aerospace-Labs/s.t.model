@@ -1,0 +1,498 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700&display=swap');
+
+:root {
+  font-family: 'Unbounded', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: #fff;
+  background-color: #111;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.dashboard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  background: rgba(17, 17, 17, 0.9);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid #333;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.controls {
+  position: absolute;
+  bottom: 20px;
+  left: 320px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.btn {
+  background: #222;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-family: 'Unbounded';
+  text-transform: uppercase;
+  font-size: 10px;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  background: #333;
+}
+
+.btn.active {
+  border-color: #ED1C2E;
+  color: #ED1C2E;
+}
+
+.sat-list {
+  margin-top: 20px;
+  flex-grow: 1;
+}
+
+.sat-item {
+  padding: 8px;
+  border-bottom: 1px solid #222;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.sat-item:hover {
+  background: #222;
+}
+
+.sat-item.selected {
+  color: #ED1C2E;
+}
+
+.telemetry {
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 11px;
+  border-top: 1px solid #333;
+}
+
+.time-display {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(17, 17, 17, 0.8);
+  padding: 10px;
+  border: 1px solid #333;
+  font-size: 12px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
+}
+
+/* Interactive Button Class */
+.btn-interactive {
+  transition: all 0.2s ease;
+  cursor: pointer;
+  /* Removed bold weight per user request */
+}
+
+.btn-interactive:hover {
+  background-color: #ED1C2E !important;
+  color: #111 !important;
+  border-color: #ED1C2E !important;
+}
+
+/* Base Fade In (Opacity Only) */
+@keyframes fadeInOpacity {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeInOpacity 0.5s ease forwards;
+}
+
+/* Satellite Hover Label Animation */
+/* Replaced keyframes with transition-based approach for enter/exit */
+.satellite-label {
+  opacity: 0;
+  transform: translate(20px, 10px);
+  /* Start slightly lower */
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.satellite-label.visible {
+  opacity: 1;
+  transform: translate(20px, -15px);
+  /* Animate up to final position */
+}
+
+/* Border Fade Animation */
+@keyframes border-fade {
+  from {
+    border-top-color: #111;
+  }
+
+  to {
+    border-top-color: #333;
+  }
+}
+
+.border-animate {
+  animation: border-fade 1s ease forwards;
+  /* Slower border fade */
+}
+
+/* Existing Stagger Classes remain below... */
+/* Reveal Animation Styles from original source */
+@keyframes revealUp {
+  from {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.reveal-mask {
+  overflow: hidden !important;
+}
+
+.reveal-item {
+  opacity: 0;
+  transform: translateY(110%);
+  animation-duration: 1.5s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: forwards;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+.reveal-item-full-screen {
+  opacity: 0;
+  transform: translateY(110%);
+  animation-duration: 1s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: forwards;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+.app-ready .reveal-item,
+.app-ready .reveal-item-full-screen,
+.reveal-item.immediate,
+.reveal-item-full-screen.immediate {
+  animation-name: revealUp;
+}
+
+/* Stagger Helpers */
+.stagger-1 {
+  --reveal-delay: 0.15s;
+}
+
+.stagger-2 {
+  --reveal-delay: 0.3s;
+}
+
+.stagger-3 {
+  --reveal-delay: 0.45s;
+}
+
+.stagger-4 {
+  --reveal-delay: 0.6s;
+}
+
+.stagger-5 {
+  --reveal-delay: 0.75s;
+}
+
+.stagger-6 {
+  --reveal-delay: 0.9s;
+}
+
+.stagger-7 {
+  --reveal-delay: 1.05s;
+}
+
+.stagger-8 {
+  --reveal-delay: 1.2s;
+}
+
+.stagger-9 {
+  --reveal-delay: 1.35s;
+}
+
+.stagger-10 {
+  --reveal-delay: 1.5s;
+}
+
+.stagger-11 {
+  --reveal-delay: 1.65s;
+}
+
+.stagger-12 {
+  --reveal-delay: 1.75s;
+}
+
+.stagger-full-screen-1 {
+  --reveal-delay: 0.1s;
+}
+
+.stagger-full-screen-2 {
+  --reveal-delay: 0.2s;
+}
+
+.stagger-full-screen-3 {
+  --reveal-delay: 0.3s;
+}
+
+.stagger-full-screen-4 {
+  --reveal-delay: 0.4s;
+}
+
+.stagger-full-screen-5 {
+  --reveal-delay: 0.5s;
+}
+
+.stagger-full-screen-6 {
+  --reveal-delay: 0.6s;
+}
+
+/* Tailwind Styles Shim for LoadingScreen */
+.fixed {
+  position: fixed;
+}
+
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.z-\[2000\] {
+  z-index: 2000;
+}
+
+.bg-black {
+  background-color: #000;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.text-white {
+  color: #fff;
+}
+
+.font-sans {
+  font-family: 'Unbounded', ui-sans-serif, system-ui, sans-serif;
+}
+
+.transition-transform {
+  transition-property: transform;
+}
+
+.duration-700 {
+  transition-duration: 700ms;
+}
+
+.ease-in-out {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.delay-500 {
+  transition-delay: 500ms;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+.-translate-y-full {
+  transform: translateY(-100%);
+}
+
+.translate-y-0 {
+  transform: translateY(0);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.transition-opacity {
+  transition-property: opacity;
+}
+
+.duration-500 {
+  transition-duration: 500ms;
+}
+
+.ease-out {
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
+.text-9xl {
+  font-size: 6rem;
+  line-height: 1;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background-color: #ED1C2E;
+  color: white;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+.align-top {
+  vertical-align: top;
+}
+
+.text-brand-red {
+  color: #ED1C2E;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.text-brand-gray-300 {
+  color: #d1d5db;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.tracking-\[0\.5em\] {
+  letter-spacing: 0.5em;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .5;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+}

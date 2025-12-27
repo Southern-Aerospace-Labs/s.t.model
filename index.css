@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-brand-black text-white font-sans;
+    color-scheme: dark;
+  }
+
+  /* Custom Scrollbar Styles */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #111111;
+    /* bg-brand-black */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #444;
+  }
+}
+
+@keyframes revealUp {
+  from {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.reveal-mask {
+  overflow: hidden !important;
+}
+
+.reveal-item {
+  opacity: 0;
+  transform: translateY(110%);
+  animation-duration: 1.5s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: forwards;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+
+.reveal-item-full-screen {
+  opacity: 0;
+  transform: translateY(110%);
+  animation-duration: 1s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: forwards;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+.app-ready .reveal-item,
+.app-ready .reveal-item-full-screen,
+.reveal-item.immediate,
+.reveal-item-full-screen.immediate {
+  animation-name: revealUp;
+}
+
+/* Stagger Helpers */
+.stagger-1 {
+  --reveal-delay: 0.15s;
+}
+
+.stagger-2 {
+  --reveal-delay: 0.3s;
+}
+
+.stagger-3 {
+  --reveal-delay: 0.45s;
+}
+
+.stagger-4 {
+  --reveal-delay: 0.6s;
+}
+
+.stagger-5 {
+  --reveal-delay: 0.75s;
+}
+
+.stagger-6 {
+  --reveal-delay: 0.9s;
+}
+
+.stagger-7 {
+  --reveal-delay: 1.05s;
+}
+
+.stagger-8 {
+  --reveal-delay: 1.2s;
+}
+
+.stagger-full-screen-1 {
+  --reveal-delay: 0.1s;
+}
+
+.stagger-full-screen-2 {
+  --reveal-delay: 0.2s;
+}
+
+.stagger-full-screen-3 {
+  --reveal-delay: 0.3s;
+}
+
+.stagger-full-screen-4 {
+  --reveal-delay: 0.4s;
+}
+
+.stagger-full-screen-5 {
+  --reveal-delay: 0.5s;
+}
+
+.stagger-full-screen-6 {
+  --reveal-delay: 0.6s;
+}
